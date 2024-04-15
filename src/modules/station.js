@@ -21,19 +21,33 @@ export class Station {
   }
 
   init() {
-    for (const optionStation of this.typeStation) {
-      for (let i = 0; i < optionStation.count; i++) {
-        this.#filling.push(new Column(optionStation.type, optionStation.speed))
-      }
-    }
-
-    if (this.renderApp) {
-      this.renderStation = new RenderStation(this.renderApp, this)
-    }
+    this.createСolumn();
+    this.createStation();
 
     setInterval(() => {
       this.checkQueueToFilling();
     }, 2000)
+  }
+
+  createСolumn() {
+    for (const optionStation of this.typeStation) {
+      if (!optionStation.count) {
+        optionStation.count = 1;
+      }
+      if (!optionStation.speed) {
+        optionStation.speed = 5;
+      }
+
+      for (let i = 0; i < optionStation.count; i++) {
+        this.#filling.push(new Column(optionStation.type, optionStation.speed))
+      }
+    }
+  }
+
+  createStation() {
+    if (this.renderApp) {
+      this.renderStation = new RenderStation(this.renderApp, this)
+    }
   }
 
   checkQueueToFilling() {
